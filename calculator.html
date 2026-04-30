@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Calculator</title>
+
+<style>
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #141e30, #243b55);
+    color: white;
+    padding: 20px;
+}
+
+.container {
+    max-width: 700px;
+    margin: auto;
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(15px);
+    padding: 20px;
+    border-radius: 15px;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.input-row {
+    display: flex;
+    justify-content: space-between;
+    margin: 6px 0;
+}
+
+input {
+    width: 80px;
+    padding: 5px;
+    border-radius: 6px;
+    border: none;
+}
+
+button {
+    margin: 10px 5px;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.calc { background: #00c6ff; }
+.reset { background: #ff4e50; }
+.back { background: gray; }
+
+.progress {
+    width: 100%;
+    background: #555;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+.bar {
+    height: 20px;
+    width: 0%;
+    background: #00ff99;
+    border-radius: 10px;
+}
+
+.result {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 18px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2 id="title"></h2>
+
+    <div id="inputs"></div>
+
+    <div style="text-align:center;">
+        <button class="calc" onclick="calculate()">Calculate</button>
+        <button class="reset" onclick="reset()">Reset</button>
+        <button class="back" onclick="back()">Back</button>
+    </div>
+
+    <div class="progress">
+        <div class="bar" id="bar"></div>
+    </div>
+
+    <div class="result" id="result"></div>
+</div>
+
+<script>
+
+// DATA
+function getHybrid() {
+    let arr = [
+        ["Practical Evaluations",40,20],
+        ["End Term Hybrid Theory",60,30],
+        ["Attendance",2,2],
+        ["Surprise Test",12,4],
+        ["Practical MST",10,4]
+    ];
+    for(let i=1;i<=10;i++){
+        arr.push([`Worksheet ${i}`,30,2]);
+    }
+    arr.push(["Quiz",4,4],["Assignment",10,6],["MST-1",20,5],["MST-2",20,5]);
+    return arr;
+}
+
+function getTheory(){
+    return [
+        ["External Theory",60,60],
+        ["Assignment",10,10],
+        ["Attendance",2,2],
+        ["MST-1",20,10],
+        ["Quiz",4,4],
+        ["Surprise Test",12,4],
+        ["MST-2",20,10]
+    ];
+}
+
+function getPractical(){
+    let arr = [["External Viva",40,40]];
+    for(let i=1;i<=10;i++){
+        arr.push([`Experiment ${i}`,30,4.5]);
+    }
+    arr.push(["Mid-Term Test",15,15]);
+    return arr;
+}
+
+// MODE
+let mode = localStorage.getItem("mode") || "hybrid";
+let components = [];
+
+if(mode==="hybrid"){
+    components=getHybrid();
+    title.innerText="Hybrid Calculator";
+}
+else if(mode==="theory"){
+    components=getTheory();
+    title.innerText="Theory Calculator";
+}
+else{
+    components=getPractical();
+    title.innerText="Practical Calculator";
+}
+
+// INPUTS
+let html="";
+components.forEach((c,i)=>{
+    html+=`
+    <div class="input-row">
+        <span>${c[0]} (Max ${c[1]})</span>
+        <input type="number" id="m${i}">
+    </div>`;
+});
+inputs.innerHTML=html;
+
+// CALCULATE
+function calculate(){
+    let total=0;
+    components.forEach((c,i)=>{
+        let val=parseFloat(document.getElementById(`m${i}`).value)||0;
+        total+=(val/c[1])*c[2];
+    });
+
+    let grade=getGrade(total);
+    result.innerHTML=`Total: ${total.toFixed(2)} / 100<br>Grade: ${grade}`;
+    bar.style.width=total+"%";
+}
+
+// GRADE
+function getGrade(p){
+    if(p>=90)return"A+";
+    if(p>=80)return"A";
+    if(p>=70)return"B";
+    if(p>=60)return"C";
+    if(p>=50)return"D";
+    return"F";
+}
+
+// RESET
+function reset(){
+    document.querySelectorAll("input").forEach(i=>i.value="");
+    result.innerHTML="";
+    bar.style.width="0%";
+}
+
+// BACK
+function back(){
+    window.location.href="index.html";
+}
+
+</script>
+
+</body>
+</html>

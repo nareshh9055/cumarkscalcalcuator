@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Marks Portal</title>
+
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    height: 100vh;
+    background: linear-gradient(135deg, #1f1c2c, #928dab);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
+.card {
+    backdrop-filter: blur(20px);
+    background: rgba(255,255,255,0.1);
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+    width: 320px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+button {
+    width: 100%;
+    margin: 10px 0;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.hybrid { background: #00c6ff; color: black; }
+.theory { background: #7b2ff7; }
+.practical { background: #ff4e50; }
+
+button:hover {
+    transform: scale(1.05);
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+    <h1>📊 Marks Portal</h1>
+
+    <button class="hybrid" onclick="go('hybrid')">Hybrid Mode</button>
+    <button class="theory" onclick="go('theory')">Theory Mode</button>
+    <button class="practical" onclick="go('practical')">Practical Mode</button>
+</div>
+
+<script>
+function go(mode){
+    localStorage.setItem("mode", mode);
+    window.location.href = "calculator.html";
+}
+</script>
+
+</body>
+</html>
